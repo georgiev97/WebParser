@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: net.sourceforge.htmlunit:htmlunit:unknown">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/net/sourceforge/htmlunit/htmlunit/unknown/htmlunit-unknown.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/net/sourceforge/htmlunit/htmlunit/unknown/htmlunit-unknown-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/net/sourceforge/htmlunit/htmlunit/unknown/htmlunit-unknown-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,55 +1,59 @@
 
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
+import io.github.bonigarcia.wdm.PhantomJsDriverManager;
+import org.openqa.selenium.*;
 //import org.openqa.selenium.firefox.FirefoxDriver;
 //comment the above line and uncomment below line to use Chrome
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriverService;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.*;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 public class GoogleSearch {
 
 
     public static void main(String[] args) throws InterruptedException {
-        WebDriver driver;
 
-        System.setProperty("webdriver.gecko.driver", "/valentin");
 
-        driver= new FirefoxDriver();
+        // System.setProperty("webdriver.gecko.driver", "/valentin");
+
+
+        PhantomJsDriverManager.getInstance().setup();
+
+        WebDriver driver = new PhantomJSDriver();
 
         String url = "https://play.google.com/store/search?q=calculator&c=apps";
 
         driver.get(url);
 
-        JavascriptExecutor js=(JavascriptExecutor) driver;
+        Long value = (Long) ((JavascriptExecutor) driver).executeScript("return document.body.scrollHeight;");
 
-        String s = "window.scrollTo(0,document.body.scrollHeight);";
+        Long currentHeight = 0L;
 
-        js.executeScript(s);
+        while (!value.equals(currentHeight)) {
 
-        Thread.sleep(10*1000);
-
-         js=(JavascriptExecutor) driver;
-
-         s = "window.scrollTo(0,document.body.scrollHeight);";
-
-        js.executeScript(s);
-
-        Thread.sleep(10*1000);
-
-         js=(JavascriptExecutor) driver;
-
-         s = "window.scrollTo(0,document.body.scrollHeight);";
-
-        js.executeScript(s);
-
-        Thread.sleep(10*1000);
+            ((JavascriptExecutor) driver).executeScript("window.scrollTo(0," + value + ");");
 
 
 
+            currentHeight = value;
 
+            System.out.println("Sleeping... wleepy");
+
+
+
+            Thread.sleep(5000);
+
+
+            value = (Long) ((JavascriptExecutor) driver).executeScript("return document.body.scrollHeight;");
+        }
 
 
         String content = driver.getPageSource();
@@ -65,10 +69,14 @@ public class GoogleSearch {
 
         } catch (IOException ex) {
 
+            ex.getMessage();
+
 
         } finally {
             try {
-                writer.close();
+                if (writer != null) {
+                    writer.close();
+                }
 
             } catch (Exception ex) {
 
@@ -76,8 +84,8 @@ public class GoogleSearch {
         }
 
 
-        System.out.println("done");
-driver.close();
+        System.out.println("Tittle:" + driver.getTitle());
+        driver.close();
 
     }
- }
+}

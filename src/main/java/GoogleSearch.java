@@ -16,11 +16,12 @@ public class GoogleSearch {
 
     public static void main(String[] args) throws InterruptedException, IOException {
 
-        //just for test
-        System.setProperty("webdriver.gecko.driver", "/valentin");
-//        PhantomJsDriverManager.getInstance().setup();
 
-        String url = "https://www.mwcamericas.com/exhibition/2017-exhibitors/page/22/";
+        //just for test
+        //System.setProperty("webdriver.gecko.driver", "/valentin");
+        PhantomJsDriverManager.getInstance().setup();
+
+        String url = "https://www.mwcamericas.com/exhibition/2017-exhibitors/";
         String name = "top-area-cont";
         String country = "list-country";
         String phone = "flex-contents";
@@ -36,7 +37,7 @@ public class GoogleSearch {
         WebDriver web;
         WebDriver pageDriver = null;
         List<WebDriver> pages = null;
-        WebDriver driver = new FirefoxDriver();//new PhantomJSDriver();
+        WebDriver driver = new PhantomJSDriver();
 
         Company company;
         List<Company> companies = new ArrayList<>();
@@ -74,9 +75,10 @@ public class GoogleSearch {
         int nextElement = driver.findElements(By.className(pageClass)).size();
         while (nextElement != 0) {
 
-            pageDriver = new FirefoxDriver();
+            pageDriver = new PhantomJSDriver();
 
             pageDriver.get(nextPageUrl);
+            System.out.println("visit "+nextPageUrl);
 
             if (pageDriver.findElements(By.className(pageClass)).size() != 0) {
 
@@ -103,24 +105,25 @@ public class GoogleSearch {
 
         }
 
-
+int total = driverPages.size();
+        int visited = 0;
         for (WebDriver page : driverPages) {
 
             for (Company c : companies) {
 
-                page = new FirefoxDriver();
+                page = new PhantomJSDriver();
 
                 //page.manage().timeouts().pageLoadTimeout(5,TimeUnit.SECONDS);
 
                 page.get(c.id);
 
-                System.out.println(c.id);
+//                System.out.println(c.id);
 
                 if (page.findElements(By.className(name)).size() == 0) {
                     c.name = null;
                 } else {
                     c.name = page.findElement(By.className(name)).getText();
-                    System.out.println("Name : " + c.name);
+//                    System.out.println("Name : " + c.name);
                 }
 
                 if (page.findElements(By.className(country)).size() == 0) {
@@ -128,7 +131,7 @@ public class GoogleSearch {
                 } else {
                     c.country = page.findElement(By.className(country)).getText();
 
-                    System.out.println("Country : " + c.country);
+//                    System.out.println("Country : " + c.country);
                 }
 
                 if (page.findElements(By.className(email)).size() == 0) {
@@ -136,7 +139,7 @@ public class GoogleSearch {
 
                 } else {
                     c.email = page.findElement(By.className(email)).getAttribute(attribute).replaceAll("mailto:", "");
-                    System.out.println("Email : " + c.email);
+//                    System.out.println("Email : " + c.email);
 
                 }
 
@@ -148,7 +151,7 @@ public class GoogleSearch {
 
                     c.site = page.findElement(By.className(site)).getAttribute(attribute);
 
-                    System.out.println("Site : " + c.site);
+//                    System.out.println("Site : " + c.site);
                 }
 
                 if (page.findElements(By.className(phone)).size() == 0) {
@@ -164,7 +167,7 @@ public class GoogleSearch {
                             c.phone = ph.getText();
                         }
                     }
-                    System.out.println("Phone : " + c.phone);
+//                    System.out.println("Phone : " + c.phone);
                 }
 
 
@@ -178,14 +181,16 @@ public class GoogleSearch {
                     for (WebElement webTag : webTags) {
 
                         c.tags.add(webTag.getText());
-                        System.out.println("Tags : " + c.tags);
+//                        System.out.println("Tags : " + c.tags);
                     }
 
 
                 }
 
-
+visited++;
+                System.out.println("Visited "+visited+ " of "+total);
                 page.quit();
+
             }
         }
 
@@ -223,7 +228,12 @@ public class GoogleSearch {
             row.createCell(3).setCellValue(company.phone);
             row.createCell(4).setCellValue(company.email);
             row.createCell(5).setCellValue(company.site);
-            row.createCell(6).setCellValue(String.valueOf(company.tags));
+            if(company.tags !=null) {
+                String tags = String.valueOf(company.tags);
+                row.createCell(6).setCellValue(tags.substring(1, tags.length() - 1));
+            }else{
+                row.createCell(6).setCellValue("");
+            }
         }
         try (FileOutputStream fileOut = new FileOutputStream(excelFileName)) {
             wb.write(fileOut);

@@ -7,22 +7,21 @@ import java.util.Set;
 public class Company {
     public String id;//source link
     public String name;
-    public String country;
-    public String phone;
-    public String site;
+    public String position;
+    public String companyName;
     public String email;
-    public Set<String> tags = new LinkedHashSet<>();
+    public String segment;
+
 
     @Override
     public int hashCode() {
         int hash = 5;
         hash = 89 * hash + Objects.hashCode(this.id);
         hash = 89 * hash + Objects.hashCode(this.name);
-        hash = 89 * hash + Objects.hashCode(this.country);
-        hash = 89 * hash + Objects.hashCode(this.phone);
-        hash = 89 * hash + Objects.hashCode(this.site);
+        hash = 89 * hash + Objects.hashCode(this.companyName);
         hash = 89 * hash + Objects.hashCode(this.email);
-        hash = 89 * hash + Objects.hashCode(this.tags);
+        hash = 89 * hash + Objects.hashCode(this.segment);
+        hash = 89 * hash + Objects.hashCode(this.position);
         return hash;
     }
 
@@ -44,19 +43,17 @@ public class Company {
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
-        if (!Objects.equals(this.country, other.country)) {
-            return false;
-        }
-        if (!Objects.equals(this.phone, other.phone)) {
-            return false;
-        }
-        if (!Objects.equals(this.site, other.site)) {
-            return false;
-        }
         if (!Objects.equals(this.email, other.email)) {
             return false;
         }
-        if (!Objects.equals(this.tags, other.tags)) {
+        if (!Objects.equals(this.segment, other.segment)) {
+            return false;
+        }
+        if (!Objects.equals(this.position, other.position)) {
+            return false;
+        }
+
+        if (!Objects.equals(this.companyName, other.companyName)) {
             return false;
         }
         return true;

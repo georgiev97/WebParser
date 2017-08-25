@@ -41,7 +41,7 @@ public class Carriercommunity {
 
         WebDriver driver = new PhantomJSDriver();
 
-        Company company = null;
+
         List<Company> companies = new ArrayList<>();
 
         driver.get(url);
@@ -61,69 +61,64 @@ public class Carriercommunity {
         Thread.sleep(1000);
 
 
-//        Long value = (Long) ((JavascriptExecutor) driver).executeScript("return document.body.scrollHeight;");
-//        Long currentHeight = 0L;
-//
 
-//        while (!value.equals(currentHeight)) {
-//
-//            ((JavascriptExecutor) driver).executeScript("window.scrollTo(0," + value + ");");
-//
-//
-//            currentHeight = value;
-//
-//            System.out.println("Sleeping... wleepy");
-//
-//
-//            Thread.sleep(5000);
-//
-//
-//            value = (Long) ((JavascriptExecutor) driver).executeScript("return document.body.scrollHeight;");
-//        }
-
-        List<WebElement> elements = driver.findElements(By.id(profileId));
-        System.out.println("elements " + elements.size());
-        List<WebElement> emailsId = driver.findElements(By.id(emailId));
-        System.out.println("emailsId " + emailsId.size());
+//        List<WebElement> elements = driver.findElements(By.id(profileId));
+//        System.out.println("elements " + elements.size());
+//        List<WebElement> emailsId = driver.findElements(By.id(emailId));
+//        System.out.println("emailsId " + emailsId.size());
 
 
-
+        List<WebElement> elements  = driver.findElement(By.id("browse-delegate")).findElement(By.tagName("tbody")).findElements(By.tagName("tr"));
 
         for (WebElement element : elements) {
+            List<WebElement> tds = element.findElements(By.tagName("td"));
+            Company person = new Company();
+//
+//            href = element.getAttribute(attribute);
+//                company.id = href;
 
-                href = element.getAttribute(attribute);
-                company = new Company();
-                company.id = href;
-                companies.add(company);
-                System.out.println("company.id = " + company.id);
-
-        }
-
-        for (WebElement idEmail : emailsId) {
-
-                getEmail.add(idEmail.getAttribute(attribute));
-        }
-
-        for (String emailLinks : getEmail){
-
-            driver.get(emailLinks);
-            email = driver.findElement(By.className("invitee")).getAttribute("data-email");
-            if (company != null) {
-                company.email = email;
+            person.companyName = tds.get(1).getText();
+            person.name = tds.get(2).getText();
+            person.position = tds.get(3).getText();
+            person.segment = tds.get(5).getText();
+            try {
+                person.email = tds.get(6).findElement(By.id(emailId)).getAttribute(attribute);
+            }catch (Exception ex){
+                System.out.println("I AM ANI +++++++++++++++++++++++++++==============++++++++++++++==========+++++++++======");
             }
+            companies.add(person);
+            System.out.println(person);
 
         }
 
+//        for (WebElement idEmail : emailsId) {
+//
+//                getEmail.add(idEmail.getAttribute(attribute));
+//        }
+//
+//        for (String emailLinks : getEmail){
 
         int total = companies.size();
         int visited = 0;
+        for (Company person : companies){
+            if(person.email==null)continue;
+            driver.get(person.email);
+            email = driver.findElement(By.className("invitee")).getAttribute("data-email");
+            person.email = email;
+            visited++;
+            System.out.println("Visited " + visited + " of " + total);
 
-        String firstName;
-        String lastName;
-        String position;
-        String companyName;
-        String segments;
+        }
 
+
+
+
+//        String firstName;
+//        String lastName;
+//        String position;
+//        String companyName;
+//        String segments;
+/*
         for (Company c : companies) {
 
             driver.get(c.id);
@@ -177,6 +172,7 @@ public class Carriercommunity {
             System.out.println("Visited " + visited + " of " + total);
 
         }
+        */
 
         driver.close();
 

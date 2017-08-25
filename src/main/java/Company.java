@@ -59,4 +59,15 @@ public class Company {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "Company{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", position='" + position + '\'' +
+                ", companyName='" + companyName + '\'' +
+                ", email='" + email + '\'' +
+                ", segment='" + segment + '\'' +
+                '}';
+    }
 }

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+</head>
+<body onmouseover="showCoords(event)">
+
+ <button onclick="load_home()"> HOME </button>
+<div id ="content" style="width: 600px; height: 600px;" > </div>
+
+
+ <div id="demo"></div>
+
+
+<!--<embed src="'+page+'" type="text/html" id="test" style="width: 600px; height: 600px;" id="test" />-->
+
+ <script type="text/javascript">
+
+    function  load_home() {
+//
+//        var page="https://acc2017.pathable.com/session?auth_token=JgBCekp6pqCYJf6cEohp";
+//        document.getElementById("content").innerHTML='<object data="text.html" type="text/html" style="width: 600px; height: 600px;"  ></object>';
+
+        $(document).ready(function(){
+            $("button").click(function(){
+                $("#content").load("text.html");
+            });
+        });
+
+    }
+
+    function showCoords(event) {
+        var x = event.clientX;
+        var y = event.clientY;
+        var element =  document.elementFromPoint(x, y);
+        document.getElementById("demo").innerHTML= element;
+
+    }
+
+
+</script>
+
+
+
+</body>
+</html>
